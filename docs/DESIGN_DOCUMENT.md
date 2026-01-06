@@ -517,6 +517,10 @@ This design document outlines a scalable, intelligent coverage analysis system t
 2. **Learns from feedback** to continuously improve suggestions
 3. **Scales to large designs** using tiered processing and database backing
 
+### Cross-Coverage Scalability Summary
+
+For 3+ dimension cross-coverage, the system uses: **sparse representation** (only store non-zero bins), **lazy expansion** (compute cross products on-demand), and **threshold-based pruning** (group similar uncovered regions into single suggestions rather than enumerating all combinations).
+
 The architecture is designed to be extensible, allowing future integration with verification infrastructure and continuous improvement through feedback loops.
 
 **Future: feedback loop from engineers** - The system will incorporate explicit feedback mechanisms where verification engineers can rate suggestions, mark them as helpful/not helpful, and provide corrective input that feeds back into the prompt engineering and model fine-tuning pipeline.

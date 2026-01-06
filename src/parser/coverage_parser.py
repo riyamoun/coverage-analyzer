@@ -220,19 +220,41 @@ class CoverageParser:
         Returns:
             CoverageReport object with all extracted information
             
-        Raises:
-            ValueError: If required fields cannot be parsed
+        Note:
+            If a coverpoint block is incomplete or malformed, the parser
+            records a warning and continues parsing remaining sections.
         """
-        # Extract basic metadata
-        design = self._extract_design(text)
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        # Extract basic metadata with graceful defaults
+        try:
+            design = self._extract_design(text)
+        except ValueError:
+            logger.warning("Could not extract design name, using 'unknown'")
+            design = "unknown"
+        
         date = self._extract_date(text)
-        overall_coverage = self._extract_overall_coverage(text)
         
-        # Parse covergroups
-        covergroups = self._parse_covergroups(text)
+        try:
+            overall_coverage = self._extract_overall_coverage(text)
+        except ValueError:
+            logger.warning("Could not extract overall coverage, defaulting to 0.0")
+            overall_coverage = 0.0
         
-        # Parse cross-coverage
-        cross_coverage = self._parse_cross_coverage(text)
+        # Parse covergroups with error handling for individual groups
+        covergroups = []
+        try:
+            covergroups = self._parse_covergroups(text)
+        except Exception as e:
+            logger.warning(f"Error parsing covergroups: {e}. Continuing with partial data.")
+        
+        # Parse cross-coverage with error handling
+        cross_coverage = []
+        try:
+            cross_coverage = self._parse_cross_coverage(text)
+        except Exception as e:
+            logger.warning(f"Error parsing cross-coverage: {e}. Continuing with partial data.")
         
         # Build uncovered bins list
         uncovered_bins = self._build_uncovered_list(covergroups)

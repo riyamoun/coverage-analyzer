@@ -42,13 +42,16 @@ A powerful tool for analyzing functional coverage reports and generating AI-powe
 
 ## 🚀 Features
 
-- **📄 Coverage Report Parser**: Robust parsing of functional coverage reports with support for covergroups, coverpoints, bins, and cross-coverage
+- **📄 Coverage Report Parser**: Robust parsing of functional coverage reports with support for covergroups, coverpoints, bins, and cross-coverage. Gracefully handles malformed or incomplete reports with warning logs.
 - **🤖 LLM-Powered Suggestions**: Generate intelligent test scenarios using OpenAI, Anthropic Claude, or local Ollama models
+- **🛡️ LLM Defensiveness**: Validates JSON output from LLMs, retries on malformed responses, and falls back to heuristic suggestions if LLM fails
 - **📊 Priority Scoring**: Automatic prioritization using the formula: `(Coverage Impact × 0.4) + (Inverse Difficulty × 0.3) + (Dependency Score × 0.3)`
 - **🔮 Closure Prediction**: Estimate time-to-closure, closure probability, and identify blocking bins
 - **💾 Response Caching**: Reduce API costs with intelligent caching
 - **⏱️ Rate Limiting**: Built-in rate limiting to prevent quota exhaustion
 - **🖥️ Multiple Interfaces**: CLI tool and Streamlit web UI
+
+> **Design Philosophy**: The system is designed so that core analysis remains deterministic; LLMs are used only to accelerate human decision-making.
 
 ## 📋 Table of Contents
 
