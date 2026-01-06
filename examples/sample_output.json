@@ -1,0 +1,329 @@
+{
+  "analysis_id": "analysis_20250106_120000_1",
+  "timestamp": "2025-01-06T12:00:00.000000",
+  "report": {
+    "design": "dma_controller",
+    "date": "2025-01-02",
+    "overall_coverage": 54.84,
+    "covergroups": [
+      {
+        "name": "cg_transfer_size",
+        "coverage": 75.0,
+        "covered_bins": 6,
+        "total_bins": 8,
+        "coverpoints": [
+          {
+            "name": "cp_size",
+            "bins": [
+              {"name": "small", "range": "[0:255]", "hits": 1523, "covered": true},
+              {"name": "medium", "range": "[256:1023]", "hits": 892, "covered": true},
+              {"name": "large", "range": "[1024:4095]", "hits": 445, "covered": true},
+              {"name": "max", "range": "[4096]", "hits": 0, "covered": false}
+            ]
+          },
+          {
+            "name": "cp_burst_type",
+            "bins": [
+              {"name": "single", "range": null, "hits": 2341, "covered": true},
+              {"name": "incr", "range": null, "hits": 1822, "covered": true},
+              {"name": "wrap", "range": null, "hits": 0, "covered": false},
+              {"name": "fixed", "range": null, "hits": 234, "covered": true}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "cg_channel_arbitration",
+        "coverage": 60.0,
+        "covered_bins": 3,
+        "total_bins": 5,
+        "coverpoints": [
+          {
+            "name": "cp_active_channels",
+            "bins": [
+              {"name": "one_channel", "range": null, "hits": 5000, "covered": true},
+              {"name": "two_channels", "range": null, "hits": 1200, "covered": true},
+              {"name": "three_channels", "range": null, "hits": 45, "covered": true},
+              {"name": "four_channels", "range": null, "hits": 0, "covered": false},
+              {"name": "all_eight", "range": null, "hits": 0, "covered": false}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "cg_error_scenarios",
+        "coverage": 33.33,
+        "covered_bins": 2,
+        "total_bins": 6,
+        "coverpoints": [
+          {
+            "name": "cp_error_type",
+            "bins": [
+              {"name": "no_error", "range": null, "hits": 10000, "covered": true},
+              {"name": "slave_error", "range": null, "hits": 234, "covered": true},
+              {"name": "decode_error", "range": null, "hits": 0, "covered": false},
+              {"name": "timeout", "range": null, "hits": 0, "covered": false}
+            ]
+          },
+          {
+            "name": "cp_error_recovery",
+            "bins": [
+              {"name": "retry_success", "range": null, "hits": 0, "covered": false},
+              {"name": "abort", "range": null, "hits": 0, "covered": false}
+            ]
+          }
+        ]
+      }
+    ],
+    "uncovered_bins": [
+      {"covergroup": "cg_transfer_size", "coverpoint": "cp_size", "bin": "max[4096]", "hits": 0},
+      {"covergroup": "cg_transfer_size", "coverpoint": "cp_burst_type", "bin": "wrap", "hits": 0},
+      {"covergroup": "cg_channel_arbitration", "coverpoint": "cp_active_channels", "bin": "four_channels", "hits": 0},
+      {"covergroup": "cg_channel_arbitration", "coverpoint": "cp_active_channels", "bin": "all_eight", "hits": 0},
+      {"covergroup": "cg_error_scenarios", "coverpoint": "cp_error_type", "bin": "decode_error", "hits": 0},
+      {"covergroup": "cg_error_scenarios", "coverpoint": "cp_error_type", "bin": "timeout", "hits": 0},
+      {"covergroup": "cg_error_scenarios", "coverpoint": "cp_error_recovery", "bin": "retry_success", "hits": 0},
+      {"covergroup": "cg_error_scenarios", "coverpoint": "cp_error_recovery", "bin": "abort", "hits": 0}
+    ],
+    "cross_coverage": [
+      {
+        "name": "cross_size_burst",
+        "coverage": 50.0,
+        "covered_bins": 6,
+        "total_bins": 12,
+        "bins": [
+          {"values": "<small, single>", "hits": 500, "covered": true},
+          {"values": "<small, incr>", "hits": 400, "covered": true},
+          {"values": "<small, wrap>", "hits": 0, "covered": false},
+          {"values": "<small, fixed>", "hits": 100, "covered": true},
+          {"values": "<medium, single>", "hits": 300, "covered": true},
+          {"values": "<medium, incr>", "hits": 250, "covered": true},
+          {"values": "<medium, wrap>", "hits": 0, "covered": false},
+          {"values": "<medium, fixed>", "hits": 0, "covered": false},
+          {"values": "<large, single>", "hits": 200, "covered": true},
+          {"values": "<large, incr>", "hits": 0, "covered": false},
+          {"values": "<large, wrap>", "hits": 0, "covered": false},
+          {"values": "<large, fixed>", "hits": 0, "covered": false}
+        ],
+        "uncovered": [
+          "<small, wrap>",
+          "<medium, wrap>",
+          "<medium, fixed>",
+          "<large, incr>",
+          "<large, wrap>",
+          "<large, fixed>"
+        ]
+      }
+    ],
+    "total_bins": 31,
+    "covered_bins": 17
+  },
+  "suggestions": [
+    {
+      "target_bin": "cg_channel_arbitration.cp_active_channels.four_channels",
+      "priority": "medium",
+      "difficulty": "easy",
+      "suggestion": "Enable and start transfers on exactly 4 DMA channels simultaneously",
+      "test_outline": [
+        "1. Configure channels 0-3 with valid parameters",
+        "2. Enable all 4 channels simultaneously",
+        "3. Start transfers and monitor"
+      ],
+      "dependencies": ["Sufficient memory for 4 concurrent transfers"],
+      "reasoning": "This bin is uncovered in cg_channel_arbitration.cp_active_channels. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.387,
+      "inverse_difficulty": 1.0,
+      "dependency_score": 0.7,
+      "priority_score": 0.665,
+      "rank": 1,
+      "estimated_effort_hours": 1.0,
+      "related_bins": ["cg_channel_arbitration.cp_active_channels.all_eight"]
+    },
+    {
+      "target_bin": "cg_transfer_size.cp_size.max[4096]",
+      "priority": "medium",
+      "difficulty": "easy",
+      "suggestion": "Configure DMA with maximum transfer size of 4096 bytes",
+      "test_outline": [
+        "1. Configure DMA for 4KB transfer",
+        "2. Ensure sufficient buffer space",
+        "3. Verify complete transfer at max size"
+      ],
+      "dependencies": [],
+      "reasoning": "This bin is uncovered in cg_transfer_size.cp_size. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.352,
+      "inverse_difficulty": 1.0,
+      "dependency_score": 1.0,
+      "priority_score": 0.641,
+      "rank": 2,
+      "estimated_effort_hours": 1.0,
+      "related_bins": ["cg_transfer_size.cp_burst_type.wrap"]
+    },
+    {
+      "target_bin": "cg_channel_arbitration.cp_active_channels.all_eight",
+      "priority": "medium",
+      "difficulty": "medium",
+      "suggestion": "Configure all 8 DMA channels for concurrent operation",
+      "test_outline": [
+        "1. Configure all 8 channels",
+        "2. Enable and start all channels",
+        "3. Verify arbitration between channels"
+      ],
+      "dependencies": ["8-channel DMA support"],
+      "reasoning": "This bin is uncovered in cg_channel_arbitration.cp_active_channels. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.387,
+      "inverse_difficulty": 0.5,
+      "dependency_score": 0.7,
+      "priority_score": 0.515,
+      "rank": 3,
+      "estimated_effort_hours": 3.0,
+      "related_bins": ["cg_channel_arbitration.cp_active_channels.four_channels"]
+    },
+    {
+      "target_bin": "cg_transfer_size.cp_burst_type.wrap",
+      "priority": "medium",
+      "difficulty": "medium",
+      "suggestion": "Configure DMA for wrap burst mode with address near boundary",
+      "test_outline": [
+        "1. Configure DMA channel with wrap burst type",
+        "2. Set base address near wrap boundary (e.g., 0xFFC)",
+        "3. Start transfer and verify wrap behavior"
+      ],
+      "dependencies": ["AXI slave must support wrap bursts"],
+      "reasoning": "This bin is uncovered in cg_transfer_size.cp_burst_type. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.352,
+      "inverse_difficulty": 0.5,
+      "dependency_score": 0.7,
+      "priority_score": 0.501,
+      "rank": 4,
+      "estimated_effort_hours": 3.0,
+      "related_bins": ["cg_transfer_size.cp_size.max[4096]"]
+    },
+    {
+      "target_bin": "cg_error_scenarios.cp_error_recovery.abort",
+      "priority": "high",
+      "difficulty": "medium",
+      "suggestion": "Trigger non-recoverable error to exercise abort path",
+      "test_outline": [
+        "1. Configure abort condition",
+        "2. Trigger non-recoverable error",
+        "3. Verify abort handling"
+      ],
+      "dependencies": ["Abort mechanism enabled"],
+      "reasoning": "This bin is uncovered in cg_error_scenarios.cp_error_recovery. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.419,
+      "inverse_difficulty": 0.5,
+      "dependency_score": 0.7,
+      "priority_score": 0.528,
+      "rank": 5,
+      "estimated_effort_hours": 3.0,
+      "related_bins": ["cg_error_scenarios.cp_error_recovery.retry_success"]
+    },
+    {
+      "target_bin": "cg_error_scenarios.cp_error_type.decode_error",
+      "priority": "high",
+      "difficulty": "hard",
+      "suggestion": "Program DMA to access unmapped address region to trigger DECERR",
+      "test_outline": [
+        "1. Identify unmapped address range",
+        "2. Configure DMA to access unmapped region",
+        "3. Verify decode error response"
+      ],
+      "dependencies": ["Unmapped address region in memory map"],
+      "reasoning": "This bin is uncovered in cg_error_scenarios.cp_error_type. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.419,
+      "inverse_difficulty": 0.333,
+      "dependency_score": 0.7,
+      "priority_score": 0.478,
+      "rank": 6,
+      "estimated_effort_hours": 8.0,
+      "related_bins": ["cg_error_scenarios.cp_error_type.timeout"]
+    },
+    {
+      "target_bin": "cg_error_scenarios.cp_error_type.timeout",
+      "priority": "high",
+      "difficulty": "hard",
+      "suggestion": "Inject bus stall to trigger DMA timeout condition",
+      "test_outline": [
+        "1. Configure timeout threshold",
+        "2. Inject bus stall or slow response",
+        "3. Verify timeout detection"
+      ],
+      "dependencies": ["Testbench stall injection capability"],
+      "reasoning": "This bin is uncovered in cg_error_scenarios.cp_error_type. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.419,
+      "inverse_difficulty": 0.333,
+      "dependency_score": 0.7,
+      "priority_score": 0.478,
+      "rank": 7,
+      "estimated_effort_hours": 8.0,
+      "related_bins": ["cg_error_scenarios.cp_error_type.decode_error"]
+    },
+    {
+      "target_bin": "cg_error_scenarios.cp_error_recovery.retry_success",
+      "priority": "high",
+      "difficulty": "hard",
+      "suggestion": "Configure retry mechanism and trigger transient error followed by success",
+      "test_outline": [
+        "1. Enable retry on error",
+        "2. Inject transient error (first attempt fails)",
+        "3. Allow retry to succeed"
+      ],
+      "dependencies": ["Error injection and retry configuration"],
+      "reasoning": "This bin is uncovered in cg_error_scenarios.cp_error_recovery. Similar bins are covered, suggesting the infrastructure works.",
+      "coverage_impact": 0.419,
+      "inverse_difficulty": 0.333,
+      "dependency_score": 0.7,
+      "priority_score": 0.478,
+      "rank": 8,
+      "estimated_effort_hours": 8.0,
+      "related_bins": ["cg_error_scenarios.cp_error_recovery.abort"]
+    }
+  ],
+  "summary": {
+    "design": "dma_controller",
+    "analysis_date": "2025-01-06T12:00:00.000000",
+    "coverage": {
+      "overall": 54.84,
+      "gap_to_100": 45.16,
+      "total_bins": 31,
+      "covered_bins": 17,
+      "uncovered_bins": 14
+    },
+    "covergroups": {
+      "cg_transfer_size": {"coverage": 75.0, "uncovered": 2},
+      "cg_channel_arbitration": {"coverage": 60.0, "uncovered": 2},
+      "cg_error_scenarios": {"coverage": 33.33, "uncovered": 4}
+    },
+    "cross_coverage": {
+      "cross_size_burst": {"coverage": 50.0, "uncovered": 6}
+    },
+    "suggestions": {
+      "total_suggestions": 8,
+      "by_difficulty": {"easy": 2, "medium": 3, "hard": 3},
+      "by_priority": {"high": 4, "medium": 4, "low": 0},
+      "average_score": 0.536,
+      "estimated_total_effort_hours": 35.0,
+      "quick_wins": 2,
+      "top_3_bins": [
+        "cg_channel_arbitration.cp_active_channels.four_channels",
+        "cg_transfer_size.cp_size.max[4096]",
+        "cg_channel_arbitration.cp_active_channels.all_eight"
+      ]
+    },
+    "recommendations": [
+      "Coverage is moderate. Focus on quick wins to rapidly improve coverage.",
+      "Covergroup 'cg_error_scenarios' has low coverage (33.33%). Prioritize this area.",
+      "Cross-coverage 'cross_size_burst' (50.0%) needs attention. Create tests that exercise multiple feature combinations.",
+      "There are 2 easy-difficulty suggestions. Start with these for quick coverage gains."
+    ]
+  },
+  "performance": {
+    "parse_time_seconds": 0.015,
+    "llm_time_seconds": 0.0,
+    "prioritization_time_seconds": 0.002,
+    "total_time_seconds": 0.018,
+    "suggestions_generated": 8,
+    "llm_stats": {}
+  }
+}

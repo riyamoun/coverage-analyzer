@@ -1,0 +1,83 @@
+=======================================================
+Functional Coverage Report
+Design: pcie_endpoint_controller
+Date: 2025-01-05
+=======================================================
+
+Covergroup: cg_tlp_types
+  Coverage: 62.50% (5/8 bins)
+  
+  Coverpoint: cp_type
+    bin memory_read           hits: 4521    covered
+    bin memory_write          hits: 3892    covered
+    bin config_read           hits: 1245    covered
+    bin config_write          hits: 987     covered
+    bin io_read               hits: 0       UNCOVERED
+    bin io_write              hits: 0       UNCOVERED
+    bin message               hits: 0       UNCOVERED
+    bin completion            hits: 2341    covered
+
+-------------------------------------------------------
+Covergroup: cg_packet_sizes
+  Coverage: 80.00% (4/5 bins)
+  
+  Coverpoint: cp_payload_size
+    bin small[0:64]           hits: 8234    covered
+    bin medium[65:256]        hits: 4521    covered
+    bin large[257:1024]       hits: 1234    covered
+    bin max[1025:4096]        hits: 456     covered
+    bin zero_length           hits: 0       UNCOVERED
+
+-------------------------------------------------------
+Covergroup: cg_link_states
+  Coverage: 50.00% (3/6 bins)
+  
+  Coverpoint: cp_link_state
+    bin L0_active             hits: 50000   covered
+    bin L0s_idle              hits: 2341    covered
+    bin L1_standby            hits: 0       UNCOVERED
+    bin L2_sleep              hits: 0       UNCOVERED
+    bin recovery              hits: 0       UNCOVERED
+    bin detect                hits: 567     covered
+
+-------------------------------------------------------
+Covergroup: cg_error_handling
+  Coverage: 42.86% (3/7 bins)
+  
+  Coverpoint: cp_error_type
+    bin no_error              hits: 45000   covered
+    bin crc_error             hits: 234     covered
+    bin timeout_error         hits: 0       UNCOVERED
+    bin malformed_tlp         hits: 0       UNCOVERED
+    bin poisoned_tlp          hits: 0       UNCOVERED
+    bin ecrc_error            hits: 0       UNCOVERED
+    bin correctable           hits: 123     covered
+
+-------------------------------------------------------
+Cross Coverage: cross_type_size
+  Coverage: 45.00% (9/20 bins)
+  
+  <memory_read, small>       hits: 2341    covered
+  <memory_read, medium>      hits: 1234    covered
+  <memory_read, large>       hits: 567     covered
+  <memory_read, max>         hits: 0       UNCOVERED
+  <memory_write, small>      hits: 1892    covered
+  <memory_write, medium>     hits: 1023    covered
+  <memory_write, large>      hits: 456     covered
+  <memory_write, max>        hits: 234     covered
+  <config_read, small>       hits: 1245    covered
+  <config_read, medium>      hits: 0       UNCOVERED
+  <config_read, large>       hits: 0       UNCOVERED
+  <config_read, max>         hits: 0       UNCOVERED
+  <config_write, small>      hits: 0       UNCOVERED
+  <config_write, medium>     hits: 0       UNCOVERED
+  <config_write, large>      hits: 0       UNCOVERED
+  <config_write, max>        hits: 0       UNCOVERED
+  <completion, small>        hits: 0       UNCOVERED
+  <completion, medium>       hits: 0       UNCOVERED
+  <completion, large>        hits: 0       UNCOVERED
+  <completion, max>          hits: 0       UNCOVERED
+
+=======================================================
+Overall Coverage: 52.17%
+=======================================================

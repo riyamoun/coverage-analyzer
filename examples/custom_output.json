@@ -1,0 +1,258 @@
+{
+  "analysis_id": "analysis_20250106_140000_2",
+  "timestamp": "2025-01-06T14:00:00.000000",
+  "report": {
+    "design": "pcie_endpoint_controller",
+    "date": "2025-01-05",
+    "overall_coverage": 52.17,
+    "covergroups": [
+      {
+        "name": "cg_tlp_types",
+        "coverage": 62.5,
+        "covered_bins": 5,
+        "total_bins": 8,
+        "coverpoints": [
+          {
+            "name": "cp_type",
+            "bins": [
+              {"name": "memory_read", "range": null, "hits": 4521, "covered": true},
+              {"name": "memory_write", "range": null, "hits": 3892, "covered": true},
+              {"name": "config_read", "range": null, "hits": 1245, "covered": true},
+              {"name": "config_write", "range": null, "hits": 987, "covered": true},
+              {"name": "io_read", "range": null, "hits": 0, "covered": false},
+              {"name": "io_write", "range": null, "hits": 0, "covered": false},
+              {"name": "message", "range": null, "hits": 0, "covered": false},
+              {"name": "completion", "range": null, "hits": 2341, "covered": true}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "cg_packet_sizes",
+        "coverage": 80.0,
+        "covered_bins": 4,
+        "total_bins": 5,
+        "coverpoints": [
+          {
+            "name": "cp_payload_size",
+            "bins": [
+              {"name": "small", "range": "[0:64]", "hits": 8234, "covered": true},
+              {"name": "medium", "range": "[65:256]", "hits": 4521, "covered": true},
+              {"name": "large", "range": "[257:1024]", "hits": 1234, "covered": true},
+              {"name": "max", "range": "[1025:4096]", "hits": 456, "covered": true},
+              {"name": "zero_length", "range": null, "hits": 0, "covered": false}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "cg_link_states",
+        "coverage": 50.0,
+        "covered_bins": 3,
+        "total_bins": 6,
+        "coverpoints": [
+          {
+            "name": "cp_link_state",
+            "bins": [
+              {"name": "L0_active", "range": null, "hits": 50000, "covered": true},
+              {"name": "L0s_idle", "range": null, "hits": 2341, "covered": true},
+              {"name": "L1_standby", "range": null, "hits": 0, "covered": false},
+              {"name": "L2_sleep", "range": null, "hits": 0, "covered": false},
+              {"name": "recovery", "range": null, "hits": 0, "covered": false},
+              {"name": "detect", "range": null, "hits": 567, "covered": true}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "cg_error_handling",
+        "coverage": 42.86,
+        "covered_bins": 3,
+        "total_bins": 7,
+        "coverpoints": [
+          {
+            "name": "cp_error_type",
+            "bins": [
+              {"name": "no_error", "range": null, "hits": 45000, "covered": true},
+              {"name": "crc_error", "range": null, "hits": 234, "covered": true},
+              {"name": "timeout_error", "range": null, "hits": 0, "covered": false},
+              {"name": "malformed_tlp", "range": null, "hits": 0, "covered": false},
+              {"name": "poisoned_tlp", "range": null, "hits": 0, "covered": false},
+              {"name": "ecrc_error", "range": null, "hits": 0, "covered": false},
+              {"name": "correctable", "range": null, "hits": 123, "covered": true}
+            ]
+          }
+        ]
+      }
+    ],
+    "uncovered_bins": [
+      {"covergroup": "cg_tlp_types", "coverpoint": "cp_type", "bin": "io_read", "hits": 0},
+      {"covergroup": "cg_tlp_types", "coverpoint": "cp_type", "bin": "io_write", "hits": 0},
+      {"covergroup": "cg_tlp_types", "coverpoint": "cp_type", "bin": "message", "hits": 0},
+      {"covergroup": "cg_packet_sizes", "coverpoint": "cp_payload_size", "bin": "zero_length", "hits": 0},
+      {"covergroup": "cg_link_states", "coverpoint": "cp_link_state", "bin": "L1_standby", "hits": 0},
+      {"covergroup": "cg_link_states", "coverpoint": "cp_link_state", "bin": "L2_sleep", "hits": 0},
+      {"covergroup": "cg_link_states", "coverpoint": "cp_link_state", "bin": "recovery", "hits": 0},
+      {"covergroup": "cg_error_handling", "coverpoint": "cp_error_type", "bin": "timeout_error", "hits": 0},
+      {"covergroup": "cg_error_handling", "coverpoint": "cp_error_type", "bin": "malformed_tlp", "hits": 0},
+      {"covergroup": "cg_error_handling", "coverpoint": "cp_error_type", "bin": "poisoned_tlp", "hits": 0},
+      {"covergroup": "cg_error_handling", "coverpoint": "cp_error_type", "bin": "ecrc_error", "hits": 0}
+    ],
+    "cross_coverage": [
+      {
+        "name": "cross_type_size",
+        "coverage": 45.0,
+        "covered_bins": 9,
+        "total_bins": 20,
+        "bins": [],
+        "uncovered": [
+          "<memory_read, max>",
+          "<config_read, medium>",
+          "<config_read, large>",
+          "<config_read, max>",
+          "<config_write, small>",
+          "<config_write, medium>",
+          "<config_write, large>",
+          "<config_write, max>",
+          "<completion, small>",
+          "<completion, medium>",
+          "<completion, large>"
+        ]
+      }
+    ],
+    "total_bins": 46,
+    "covered_bins": 24
+  },
+  "suggestions": [
+    {
+      "target_bin": "cg_packet_sizes.cp_payload_size.zero_length",
+      "priority": "medium",
+      "difficulty": "easy",
+      "suggestion": "Send a zero-length TLP packet to cover this bin",
+      "test_outline": [
+        "1. Configure PCIe endpoint for zero-length read",
+        "2. Issue memory read with no data payload",
+        "3. Verify zero-length packet handling"
+      ],
+      "dependencies": [],
+      "reasoning": "Zero-length packets are valid in PCIe for read requests. Simple configuration change.",
+      "coverage_impact": 0.25,
+      "inverse_difficulty": 1.0,
+      "dependency_score": 1.0,
+      "priority_score": 0.7,
+      "rank": 1,
+      "estimated_effort_hours": 1.0,
+      "related_bins": []
+    },
+    {
+      "target_bin": "cg_tlp_types.cp_type.io_read",
+      "priority": "medium",
+      "difficulty": "medium",
+      "suggestion": "Configure endpoint for I/O space access and issue I/O read transaction",
+      "test_outline": [
+        "1. Enable I/O space in PCIe configuration",
+        "2. Configure BAR for I/O space",
+        "3. Issue I/O read transaction"
+      ],
+      "dependencies": ["I/O space must be enabled in endpoint configuration"],
+      "reasoning": "I/O transactions are legacy but still supported. Need proper configuration.",
+      "coverage_impact": 0.28,
+      "inverse_difficulty": 0.5,
+      "dependency_score": 0.7,
+      "priority_score": 0.472,
+      "rank": 2,
+      "estimated_effort_hours": 3.0,
+      "related_bins": ["cg_tlp_types.cp_type.io_write"]
+    },
+    {
+      "target_bin": "cg_link_states.cp_link_state.L1_standby",
+      "priority": "high",
+      "difficulty": "medium",
+      "suggestion": "Trigger L1 power state entry by configuring ASPM and allowing idle period",
+      "test_outline": [
+        "1. Enable ASPM L1 in link capabilities",
+        "2. Configure L1 entry latency",
+        "3. Allow link to go idle for L1 entry",
+        "4. Verify L1 state is reached"
+      ],
+      "dependencies": ["ASPM must be supported and enabled"],
+      "reasoning": "L1 is a power-saving state. Requires ASPM configuration and idle link.",
+      "coverage_impact": 0.32,
+      "inverse_difficulty": 0.5,
+      "dependency_score": 0.7,
+      "priority_score": 0.508,
+      "rank": 3,
+      "estimated_effort_hours": 3.0,
+      "related_bins": ["cg_link_states.cp_link_state.L2_sleep"]
+    },
+    {
+      "target_bin": "cg_error_handling.cp_error_type.malformed_tlp",
+      "priority": "high",
+      "difficulty": "hard",
+      "suggestion": "Inject a malformed TLP with invalid format field or length mismatch",
+      "test_outline": [
+        "1. Configure TLP error injection",
+        "2. Create TLP with invalid header format",
+        "3. Send malformed TLP to endpoint",
+        "4. Verify malformed TLP detection and error handling"
+      ],
+      "dependencies": ["TLP injection capability in testbench", "Error injection support"],
+      "reasoning": "Malformed TLP detection is critical for robustness. Requires error injection.",
+      "coverage_impact": 0.35,
+      "inverse_difficulty": 0.333,
+      "dependency_score": 0.5,
+      "priority_score": 0.39,
+      "rank": 4,
+      "estimated_effort_hours": 8.0,
+      "related_bins": ["cg_error_handling.cp_error_type.poisoned_tlp"]
+    }
+  ],
+  "summary": {
+    "design": "pcie_endpoint_controller",
+    "analysis_date": "2025-01-06T14:00:00.000000",
+    "coverage": {
+      "overall": 52.17,
+      "gap_to_100": 47.83,
+      "total_bins": 46,
+      "covered_bins": 24,
+      "uncovered_bins": 22
+    },
+    "covergroups": {
+      "cg_tlp_types": {"coverage": 62.5, "uncovered": 3},
+      "cg_packet_sizes": {"coverage": 80.0, "uncovered": 1},
+      "cg_link_states": {"coverage": 50.0, "uncovered": 3},
+      "cg_error_handling": {"coverage": 42.86, "uncovered": 4}
+    },
+    "cross_coverage": {
+      "cross_type_size": {"coverage": 45.0, "uncovered": 11}
+    },
+    "suggestions": {
+      "total_suggestions": 4,
+      "by_difficulty": {"easy": 1, "medium": 2, "hard": 1},
+      "by_priority": {"high": 2, "medium": 2, "low": 0},
+      "average_score": 0.518,
+      "estimated_total_effort_hours": 15.0,
+      "quick_wins": 1,
+      "top_3_bins": [
+        "cg_packet_sizes.cp_payload_size.zero_length",
+        "cg_link_states.cp_link_state.L1_standby",
+        "cg_tlp_types.cp_type.io_read"
+      ]
+    },
+    "recommendations": [
+      "Coverage is moderate. Focus on quick wins to rapidly improve coverage.",
+      "Covergroup 'cg_error_handling' has low coverage (42.86%). Prioritize this area.",
+      "Error scenario coverage (42.86%) is low. Consider adding error injection tests.",
+      "Cross-coverage 'cross_type_size' (45.0%) needs attention. Create tests that exercise multiple feature combinations.",
+      "There is 1 easy-difficulty suggestion. Start with this for quick coverage gains."
+    ]
+  },
+  "performance": {
+    "parse_time_seconds": 0.012,
+    "llm_time_seconds": 0.0,
+    "prioritization_time_seconds": 0.001,
+    "total_time_seconds": 0.014,
+    "suggestions_generated": 4,
+    "llm_stats": {}
+  }
+}
